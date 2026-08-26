@@ -1,0 +1,410 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Shiv Hanjura — Computer Science, Backend & AI/ML</title>
+<meta name="description" content="Shiv Hanjura — CS undergrad building backend systems, AI/ML, and security-minded software.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg: #0E1116;
+    --surface: #161B22;
+    --surface-2: #1D2430;
+    --line: #2A313D;
+    --text: #E7E9EC;
+    --muted: #8B93A1;
+    --amber: #E8A33D;
+    --teal: #3DDC97;
+    --mono: 'IBM Plex Mono', monospace;
+    --sans: 'IBM Plex Sans', sans-serif;
+  }
+  *{box-sizing:border-box; margin:0; padding:0;}
+  html{scroll-behavior:smooth;}
+  body{
+    background:var(--bg);
+    color:var(--text);
+    font-family:var(--sans);
+    line-height:1.6;
+    -webkit-font-smoothing:antialiased;
+  }
+  a{color:inherit;}
+  ::selection{background:var(--amber); color:#0E1116;}
+
+  .wrap{max-width:960px; margin:0 auto; padding:0 24px;}
+
+  /* subtle scanline / grid backdrop */
+  body::before{
+    content:"";
+    position:fixed; inset:0; z-index:-1;
+    background-image:
+      linear-gradient(rgba(255,255,255,0.015) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255,255,255,0.015) 1px, transparent 1px);
+    background-size: 42px 42px;
+  }
+
+  /* ---- nav ---- */
+  header{
+    position:sticky; top:0; z-index:50;
+    background:rgba(14,17,22,0.85);
+    backdrop-filter:blur(8px);
+    border-bottom:1px solid var(--line);
+  }
+  nav{
+    max-width:960px; margin:0 auto; padding:16px 24px;
+    display:flex; justify-content:space-between; align-items:center;
+  }
+  .logo{font-family:var(--mono); font-size:14px; letter-spacing:0.02em; color:var(--text);}
+  .logo span{color:var(--amber);}
+  .navlinks{display:flex; gap:28px; font-family:var(--mono); font-size:13px;}
+  .navlinks a{color:var(--muted); text-decoration:none; transition:color .15s;}
+  .navlinks a:hover{color:var(--amber);}
+  @media (max-width:600px){ .navlinks{display:none;} }
+
+  /* ---- hero ---- */
+  .hero{padding:96px 0 72px;}
+  .stamp{
+    display:inline-flex; align-items:center; gap:8px;
+    font-family:var(--mono); font-size:11.5px; letter-spacing:0.12em;
+    color:var(--teal); border:1px solid rgba(61,220,151,0.35);
+    background:rgba(61,220,151,0.06);
+    padding:6px 12px; border-radius:3px; text-transform:uppercase;
+    margin-bottom:28px;
+  }
+  .stamp::before{content:""; width:6px; height:6px; border-radius:50%; background:var(--teal); box-shadow:0 0 8px var(--teal);}
+  .hero h1{
+    font-size:clamp(34px, 6vw, 56px);
+    font-weight:700; letter-spacing:-0.02em; line-height:1.08;
+    margin-bottom:18px;
+  }
+  .hero h1 .accent{color:var(--amber);}
+  .hero p.lead{
+    font-size:18px; color:var(--muted); max-width:560px; margin-bottom:36px;
+  }
+  .cta-row{display:flex; flex-wrap:wrap; gap:12px;}
+  .btn{
+    font-family:var(--mono); font-size:13px; padding:11px 20px;
+    border-radius:3px; text-decoration:none; border:1px solid var(--line);
+    transition:all .15s; display:inline-flex; align-items:center; gap:8px;
+  }
+  .btn-primary{background:var(--amber); color:#0E1116; border-color:var(--amber); font-weight:600;}
+  .btn-primary:hover{background:#f0b256;}
+  .btn-ghost{color:var(--text); border-color:var(--line);}
+  .btn-ghost:hover{border-color:var(--muted);}
+
+  /* ---- section shell ---- */
+  section{padding:64px 0; border-top:1px solid var(--line);}
+  .eyebrow{
+    font-family:var(--mono); font-size:12px; color:var(--amber);
+    text-transform:uppercase; letter-spacing:0.14em; margin-bottom:10px;
+    display:flex; align-items:center; gap:10px;
+  }
+  .eyebrow::after{content:""; flex:1; height:1px; background:var(--line);}
+  h2.title{font-size:26px; font-weight:700; margin-bottom:8px;}
+  .section-sub{color:var(--muted); margin-bottom:36px; max-width:600px;}
+
+  /* ---- experience ---- */
+  .log-entry{
+    background:var(--surface); border:1px solid var(--line); border-radius:6px;
+    padding:24px; margin-bottom:16px;
+  }
+  .log-head{display:flex; justify-content:space-between; align-items:baseline; flex-wrap:wrap; gap:8px; margin-bottom:6px;}
+  .log-id{font-family:var(--mono); font-size:11px; color:var(--muted);}
+  .log-title{font-size:17px; font-weight:600;}
+  .log-org{color:var(--amber); font-weight:600;}
+  .log-date{font-family:var(--mono); font-size:12px; color:var(--muted);}
+  .log-entry ul{margin:14px 0 0 18px; color:var(--muted); font-size:14.5px;}
+  .log-entry li{margin-bottom:6px;}
+  .tag-row{display:flex; flex-wrap:wrap; gap:8px; margin-top:16px;}
+  .tag{
+    font-family:var(--mono); font-size:11px; color:var(--muted);
+    border:1px solid var(--line); padding:3px 9px; border-radius:3px;
+  }
+
+  /* ---- projects ---- */
+  .proj-grid{display:grid; grid-template-columns:1fr 1fr; gap:16px;}
+  @media (max-width:700px){ .proj-grid{grid-template-columns:1fr;} }
+  .proj-card{
+    background:var(--surface); border:1px solid var(--line); border-radius:6px;
+    padding:22px; display:flex; flex-direction:column; transition:border-color .15s, transform .15s;
+  }
+  .proj-card:hover{border-color:var(--amber); transform:translateY(-2px);}
+  .proj-top{display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:10px;}
+  .proj-id{font-family:var(--mono); font-size:10.5px; color:var(--muted);}
+  .status{
+    font-family:var(--mono); font-size:10px; text-transform:uppercase; letter-spacing:0.08em;
+    padding:2px 8px; border-radius:20px; white-space:nowrap;
+  }
+  .status-shipped{color:var(--teal); background:rgba(61,220,151,0.08); border:1px solid rgba(61,220,151,0.3);}
+  .status-active{color:var(--amber); background:rgba(232,163,61,0.08); border:1px solid rgba(232,163,61,0.3);}
+  .proj-card h3{font-size:16.5px; margin-bottom:8px;}
+  .proj-card p{color:var(--muted); font-size:14px; flex:1; margin-bottom:14px;}
+  .proj-stack{display:flex; flex-wrap:wrap; gap:6px;}
+  .proj-stack span{font-family:var(--mono); font-size:10.5px; color:var(--muted); border:1px solid var(--line); padding:2px 7px; border-radius:3px;}
+
+  /* ---- skills ---- */
+  .skill-grid{display:grid; grid-template-columns:repeat(2,1fr); gap:28px;}
+  @media (max-width:600px){ .skill-grid{grid-template-columns:1fr;} }
+  .skill-cat h4{font-family:var(--mono); font-size:12px; color:var(--amber); text-transform:uppercase; letter-spacing:0.1em; margin-bottom:12px;}
+  .skill-list{display:flex; flex-wrap:wrap; gap:8px;}
+  .skill-list span{font-size:13.5px; background:var(--surface); border:1px solid var(--line); padding:6px 12px; border-radius:3px;}
+
+  /* ---- leadership ---- */
+  .lead-box{background:var(--surface); border:1px solid var(--line); border-radius:6px; padding:24px;}
+  .lead-box h3{margin-bottom:6px; font-size:16.5px;}
+  .lead-box .role{color:var(--amber); font-family:var(--mono); font-size:12px; margin-bottom:12px; display:block;}
+  .lead-box p{color:var(--muted); font-size:14.5px;}
+
+  /* ---- contact ---- */
+  .contact-grid{display:grid; grid-template-columns:1fr 1fr; gap:40px;}
+  @media (max-width:700px){ .contact-grid{grid-template-columns:1fr;} }
+  .contact-links{display:flex; flex-direction:column; gap:14px;}
+  .contact-links a{
+    display:flex; align-items:center; gap:10px; font-family:var(--mono); font-size:14px;
+    color:var(--text); text-decoration:none; padding:12px 16px; background:var(--surface);
+    border:1px solid var(--line); border-radius:5px; transition:border-color .15s;
+  }
+  .contact-links a:hover{border-color:var(--amber);}
+  form{display:flex; flex-direction:column; gap:12px;}
+  input, textarea{
+    background:var(--surface); border:1px solid var(--line); border-radius:5px;
+    color:var(--text); font-family:var(--sans); font-size:14px; padding:12px 14px;
+    resize:vertical;
+  }
+  input:focus, textarea:focus{outline:2px solid var(--amber); outline-offset:1px; border-color:var(--amber);}
+  form button{
+    font-family:var(--mono); font-size:13px; padding:12px; border-radius:5px;
+    background:var(--amber); color:#0E1116; border:none; font-weight:600; cursor:pointer;
+    transition:background .15s;
+  }
+  form button:hover{background:#f0b256;}
+  .form-note{font-size:12px; color:var(--muted); font-family:var(--mono);}
+
+  footer{padding:32px 0; text-align:center; color:var(--muted); font-family:var(--mono); font-size:12px; border-top:1px solid var(--line);}
+
+  @media (prefers-reduced-motion: reduce){
+    html{scroll-behavior:auto;}
+    *{transition:none !important;}
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <nav>
+    <div class="logo">SHIV<span>.</span>HANJURA</div>
+    <div class="navlinks">
+      <a href="#experience">Experience</a>
+      <a href="#projects">Projects</a>
+      <a href="#skills">Skills</a>
+      <a href="#contact">Contact</a>
+    </div>
+  </nav>
+</header>
+
+<main class="wrap">
+
+  <section class="hero" style="border-top:none;">
+    <div class="stamp">Status: Open to opportunities</div>
+    <h1>Shiv Hanjura builds<br>backend systems <span class="accent">&amp;</span> AI/ML.</h1>
+    <p class="lead">Computer Science undergrad at VIT Chennai with hands-on experience in enterprise data security, and a track record of shipping full-stack and AI-driven projects — from React frontends to Python ML systems.</p>
+    <div class="cta-row">
+      <a class="btn btn-primary" href="mailto:shiv.hanjura@gmail.com">Email me</a>
+      <a class="btn btn-ghost" href="https://github.com/shivhanjura" target="_blank" rel="noopener">GitHub ↗</a>
+      <a class="btn btn-ghost" href="https://www.linkedin.com/in/shiv-hanjura-7b8510331" target="_blank" rel="noopener">LinkedIn ↗</a>
+    </div>
+  </section>
+
+  <section id="experience">
+    <div class="eyebrow">01 · Experience</div>
+    <h2 class="title">Where I've worked</h2>
+    <p class="section-sub">Enterprise security experience alongside academic coursework.</p>
+
+    <div class="log-entry">
+      <div class="log-head">
+        <div>
+          <span class="log-title">Cybersecurity &amp; Data Security Intern — </span><span class="log-org">Hero FinCorp</span>
+        </div>
+        <span class="log-date">Summer 2026</span>
+      </div>
+      <div class="log-id">LOG · ENTERPRISE-DATA-SECURITY</div>
+      <ul>
+        <li>Worked hands-on with Forcepoint DLP, data classification frameworks, and SCCM agent deployment across the organization.</li>
+        <li>Investigated and documented a Forcepoint–WPS Office incompatibility, surfacing a genuine security finding that informed endpoint configuration.</li>
+        <li>Generated synthetic PII test datasets across multiple file formats to validate DLP classification rules against Indian data-protection standards.</li>
+        <li>Analysed SCCM agent deployment statistics to assess endpoint coverage and compliance.</li>
+        <li>Applied the RBI IT Framework and DPDPA 2023 to align technical controls with regulatory requirements.</li>
+      </ul>
+      <div class="tag-row">
+        <span class="tag">Forcepoint DLP</span>
+        <span class="tag">SCCM</span>
+        <span class="tag">RBI IT Framework</span>
+        <span class="tag">DPDPA 2023</span>
+      </div>
+    </div>
+
+    <div class="log-entry">
+      <div class="log-head">
+        <div>
+          <span class="log-title">Management Lead — </span><span class="log-org">IEEE Technical Club</span>
+        </div>
+        <span class="log-date">3 years</span>
+      </div>
+      <div class="log-id">LOG · CLUB-OPERATIONS</div>
+      <ul>
+        <li>Organized several hackathons over three years in this role.</li>
+        <li>Solved recurring operational and organizational problems for the club.</li>
+        <li>Developed leadership skills through sustained ownership of club operations.</li>
+      </ul>
+    </div>
+  </section>
+
+  <section id="projects">
+    <div class="eyebrow">02 · Projects</div>
+    <h2 class="title">What I've built</h2>
+    <p class="section-sub">A mix of backend infrastructure, applied ML, and full-stack apps — built to learn by shipping.</p>
+
+    <div class="proj-grid">
+
+      <div class="proj-card">
+        <div class="proj-top">
+          <span class="proj-id">PROJ-001</span>
+          <span class="status status-active">In progress</span>
+        </div>
+        <h3>Film Festival Submission Tracker</h3>
+        <p>A backend-first project combining LLM-based structured extraction, semantic search via embeddings, and a ranking layer — built to learn REST APIs, auth, async processing, and AI integrations end to end.</p>
+        <div class="proj-stack">
+          <span>NestJS</span><span>PostgreSQL</span><span>pgvector</span><span>LLM APIs</span><span>Docker</span>
+        </div>
+      </div>
+
+      <div class="proj-card">
+        <div class="proj-top">
+          <span class="proj-id">PROJ-002</span>
+          <span class="status status-shipped">Shipped</span>
+        </div>
+        <h3>Sentiment Analysis Bot</h3>
+        <p>Benchmarked VADER (rule-based) against BERT transformers on 14K airline tweets — 89% sarcasm-detection accuracy vs. a 64% VADER baseline. Deployed as an interactive dashboard.</p>
+        <div class="proj-stack">
+          <span>Python</span><span>Pandas</span><span>NLTK</span><span>Transformers</span><span>Streamlit</span>
+        </div>
+      </div>
+
+      <div class="proj-card">
+        <div class="proj-top">
+          <span class="proj-id">PROJ-003</span>
+          <span class="status status-shipped">Shipped</span>
+        </div>
+        <h3>Facial Recognition Attendance System</h3>
+        <p>Real-time attendance system using cosine-similarity matching with duplicate-safe tracking, processing a live webcam feed with optimized, low-latency identification.</p>
+        <div class="proj-stack">
+          <span>OpenCV</span><span>MTCNN</span><span>FaceNet</span><span>Python</span>
+        </div>
+      </div>
+
+      <div class="proj-card">
+        <div class="proj-top">
+          <span class="proj-id">PROJ-004</span>
+          <span class="status status-shipped">Shipped</span>
+        </div>
+        <h3>IoT Secure Parcel Delivery &amp; Smart Storage</h3>
+        <p>Academic team project designing a secure parcel drop-and-storage system, built and presented for faculty project review.</p>
+        <div class="proj-stack">
+          <span>IoT</span><span>Embedded Systems</span><span>Security</span>
+        </div>
+      </div>
+
+      <div class="proj-card">
+        <div class="proj-top">
+          <span class="proj-id">PROJ-005</span>
+          <span class="status status-shipped">Shipped</span>
+        </div>
+        <h3>Movie Recommendation Engine</h3>
+        <p>Recommendation engine combining collaborative filtering and content-based algorithms, deployed as an interactive app with real-time user ratings.</p>
+        <div class="proj-stack">
+          <span>Python</span><span>Pandas</span><span>Surprise</span><span>NumPy</span><span>Streamlit</span>
+        </div>
+      </div>
+
+      <div class="proj-card">
+        <div class="proj-top">
+          <span class="proj-id">PROJ-006</span>
+          <span class="status status-shipped">Shipped</span>
+        </div>
+        <h3>Screenplay Writing App</h3>
+        <p>A dependency-free, single-file browser screenplay editor with multi-project management, PDF export, and industry-standard page-break visualization.</p>
+        <div class="proj-stack">
+          <span>HTML</span><span>CSS</span><span>JavaScript</span>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <section id="skills">
+    <div class="eyebrow">03 · Skills</div>
+    <h2 class="title">Toolbox</h2>
+
+    <div class="skill-grid">
+      <div class="skill-cat">
+        <h4>Languages</h4>
+        <div class="skill-list">
+          <span>Python</span><span>TypeScript</span><span>C++</span><span>JavaScript</span><span>Java</span>
+        </div>
+      </div>
+      <div class="skill-cat">
+        <h4>Frameworks &amp; Tools</h4>
+        <div class="skill-list">
+          <span>React.js</span><span>Next.js</span><span>NestJS</span><span>Tailwind CSS</span><span>Streamlit</span><span>OpenCV</span><span>Pandas</span><span>NumPy</span><span>Git/GitHub</span>
+        </div>
+      </div>
+      <div class="skill-cat">
+        <h4>Domains</h4>
+        <div class="skill-list">
+          <span>Full-Stack Web Dev</span><span>Machine Learning</span><span>Computer Vision</span><span>Data Security</span>
+        </div>
+      </div>
+      <div class="skill-cat">
+        <h4>Currently deepening</h4>
+        <div class="skill-list">
+          <span>PostgreSQL</span><span>pgvector / RAG</span><span>Backend architecture</span><span>Data Structures &amp; Algorithms</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="contact">
+    <div class="eyebrow">04 · Contact</div>
+    <h2 class="title">Get in touch</h2>
+    <p class="section-sub">Open to internships, collaborations, and interesting problems.</p>
+
+    <div class="contact-grid">
+      <div class="contact-links">
+        <a href="mailto:shiv.hanjura@gmail.com">✉ shiv.hanjura@gmail.com</a>
+        <a href="https://github.com/shivhanjura" target="_blank" rel="noopener">↗ github.com/shivhanjura</a>
+        <a href="https://www.linkedin.com/in/shiv-hanjura-7b8510331" target="_blank" rel="noopener">↗ linkedin.com/in/shiv-hanjura</a>
+      </div>
+
+      <form action="https://formspree.io/f/YOUR_FORM_ID" method="POST">
+        <input type="text" name="name" placeholder="Your name" required>
+        <input type="email" name="email" placeholder="Your email" required>
+        <textarea name="message" rows="4" placeholder="Message" required></textarea>
+        <button type="submit">Send message</button>
+        <span class="form-note">// Replace YOUR_FORM_ID with your Formspree ID — see setup guide</span>
+      </form>
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  © <span id="year"></span> Shiv Hanjura — Built with HTML, CSS &amp; JS.
+</footer>
+
+<script>
+  document.getElementById('year').textContent = new Date().getFullYear();
+</script>
+
+</body>
+</html>
