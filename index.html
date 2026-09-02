@@ -20,6 +20,8 @@
     --teal: #3DDC97;
     --mono: 'IBM Plex Mono', monospace;
     --sans: 'IBM Plex Sans', sans-serif;
+    --cursor-x: 0px;
+    --cursor-y: 0px;
   }
   *{box-sizing:border-box; margin:0; padding:0;}
   html{scroll-behavior:smooth;}
@@ -40,9 +42,10 @@
     content:"";
     position:fixed; inset:0; z-index:-1;
     background-image:
+      radial-gradient(circle 400px at var(--cursor-x) var(--cursor-y), rgba(200,200,200,0.15) 0%, transparent 70%),
       linear-gradient(rgba(255,255,255,0.015) 1px, transparent 1px),
       linear-gradient(90deg, rgba(255,255,255,0.015) 1px, transparent 1px);
-    background-size: 42px 42px;
+    background-size: auto, 42px 42px, 42px 42px;
   }
 
   /* ---- nav ---- */
@@ -405,6 +408,11 @@
 
 <script>
   document.getElementById('year').textContent = new Date().getFullYear();
+  
+  document.addEventListener('mousemove', (e) => {
+    document.documentElement.style.setProperty('--cursor-x', e.clientX + 'px');
+    document.documentElement.style.setProperty('--cursor-y', e.clientY + 'px');
+  });
 </script>
 
 </body>
