@@ -42,10 +42,13 @@
     content:"";
     position:fixed; inset:0; z-index:-1;
     background-image:
-      radial-gradient(circle 400px at var(--cursor-x) var(--cursor-y), rgba(200,200,200,0.15) 0%, transparent 70%),
+      radial-gradient(ellipse 380px 300px at calc(var(--cursor-x) + 25px) calc(var(--cursor-y) + 15px), rgba(180,180,180,0.28) 0%, rgba(180,180,180,0.12) 35%, transparent 65%),
+      radial-gradient(circle 220px at var(--cursor-x) var(--cursor-y), rgba(200,200,200,0.22) 0%, rgba(200,200,200,0.05) 45%, transparent 70%),
+      radial-gradient(ellipse 250px 180px at calc(var(--cursor-x) - 35px) calc(var(--cursor-y) - 40px), rgba(190,190,190,0.18) 0%, transparent 55%),
       linear-gradient(rgba(255,255,255,0.015) 1px, transparent 1px),
       linear-gradient(90deg, rgba(255,255,255,0.015) 1px, transparent 1px);
-    background-size: auto, 42px 42px, 42px 42px;
+    background-size: auto, auto, auto, 42px 42px, 42px 42px;
+    filter: blur(2px);
   }
 
   /* ---- nav ---- */
