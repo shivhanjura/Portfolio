@@ -100,6 +100,39 @@
   .btn-ghost{color:var(--text); border-color:var(--line);}
   .btn-ghost:hover{border-color:var(--muted);}
 
+  /* ---- bookmark bar (bottom shortcuts) ---- */
+  .bookmark-bar{
+    position:fixed; left:50%; transform:translateX(-50%);
+    bottom:28px; display:flex; gap:14px; z-index:60;
+    pointer-events:auto;
+  }
+  .bookmark{
+    width:160px; height:78px; background:var(--surface); border:1px solid var(--line);
+    border-radius:10px; display:flex; align-items:center; justify-content:center;
+    font-family:var(--mono); color:var(--muted); cursor:pointer; transition:all .18s;
+    box-shadow:0 6px 18px rgba(0,0,0,0.45);
+  }
+  .bookmark .label{font-size:14px; font-weight:600; color:var(--text);}
+  .bookmark:hover{height:106px; transform:translateY(-8px) scale(1.02); color:var(--amber);} 
+
+  /* ---- expanding panel overlay ---- */
+  .panel-overlay{
+    position:fixed; inset:0; z-index:80; display:flex; align-items:flex-start; justify-content:center;
+    padding:48px; pointer-events:none; opacity:0; visibility:hidden; transition:opacity .28s ease, visibility .2s;
+    background:linear-gradient(180deg, rgba(14,17,22,0.88), rgba(14,17,22,0.96));
+  }
+  .panel-overlay.open{opacity:1; visibility:visible; pointer-events:auto;}
+  .panel{
+    width:100%; max-width:1100px; height:calc(100vh - 96px); background:var(--surface-2); border:1px solid var(--line);
+    border-radius:10px; overflow:auto; padding:28px; box-shadow:0 20px 60px rgba(0,0,0,0.6);
+  }
+  .panel-close{
+    position:fixed; right:28px; top:22px; z-index:90; background:transparent; border:1px solid var(--line);
+    color:var(--text); font-size:22px; width:44px; height:44px; border-radius:8px; cursor:pointer;
+  }
+  .panel-content{color:var(--text);}
+  @media (max-width:900px){ .bookmark{width:120px; height:70px;} .bookmark:hover{height:96px;} }
+
   /* ---- section shell ---- */
   section{padding:64px 0; border-top:1px solid var(--line);}
   .eyebrow{
@@ -222,6 +255,27 @@
       <a class="btn btn-ghost" href="https://www.linkedin.com/in/shiv-hanjura-7b8510331" target="_blank" rel="noopener">LinkedIn ↗</a>
     </div>
   </section>
+
+  <!-- Bookmark bar: sticky shortcuts that expand into panels -->
+  <div class="bookmark-bar" role="tablist" aria-label="Quick sections">
+    <div class="bookmark" role="button" tabindex="0" data-target="experience">
+      <div class="label">Experience</div>
+    </div>
+    <div class="bookmark" role="button" tabindex="0" data-target="projects">
+      <div class="label">Projects</div>
+    </div>
+    <div class="bookmark" role="button" tabindex="0" data-target="skills">
+      <div class="label">Skills</div>
+    </div>
+  </div>
+
+  <!-- Expanding panel overlay (pop-up content) -->
+  <div id="panel-overlay" class="panel-overlay" aria-hidden="true">
+    <button class="panel-close" aria-label="Close panel">×</button>
+    <div class="panel">
+      <div class="panel-content"></div>
+    </div>
+  </div>
 
   <section id="experience">
     <div class="eyebrow">01 · Experience</div>
@@ -416,6 +470,46 @@
     document.documentElement.style.setProperty('--cursor-x', e.clientX + 'px');
     document.documentElement.style.setProperty('--cursor-y', e.clientY + 'px');
   });
+
+  // Bookmark / panel interactions
+  (function(){
+    const bookmarks = document.querySelectorAll('.bookmark');
+    const overlay = document.getElementById('panel-overlay');
+    const panelContent = overlay.querySelector('.panel-content');
+    const closeBtn = overlay.querySelector('.panel-close');
+
+    function openPanel(targetId){
+      const section = document.getElementById(targetId);
+      if(!section) return;
+      // copy section content into panel
+      panelContent.innerHTML = '';
+      const clone = section.cloneNode(true);
+      // remove eyebrow numbers in cloned view to keep things tidy
+      const eyebrow = clone.querySelector('.eyebrow');
+      if(eyebrow) eyebrow.remove();
+      panelContent.appendChild(clone);
+      overlay.classList.add('open');
+      overlay.setAttribute('aria-hidden','false');
+      document.body.style.overflow = 'hidden';
+    }
+
+    function closePanel(){
+      overlay.classList.remove('open');
+      overlay.setAttribute('aria-hidden','true');
+      panelContent.innerHTML = '';
+      document.body.style.overflow = '';
+    }
+
+    bookmarks.forEach(b=>{
+      const target = b.getAttribute('data-target');
+      b.addEventListener('click', ()=> openPanel(target));
+      b.addEventListener('keydown', (e)=>{ if(e.key === 'Enter' || e.key === ' ') { e.preventDefault(); openPanel(target); } });
+    });
+
+    closeBtn.addEventListener('click', closePanel);
+    overlay.addEventListener('click', (e)=>{ if(e.target === overlay) closePanel(); });
+    document.addEventListener('keydown', (e)=>{ if(e.key === 'Escape') closePanel(); });
+  })();
 </script>
 
 </body>
